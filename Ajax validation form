@@ -1,0 +1,43 @@
+ <form id="message">
+   <div class="form-group">
+      <label for="name">Сообщение:</label>
+      <textarea maxlength="1000" class="form-control" rows="3" name="message"></textarea>
+      <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+      <input type="file" id="file">
+    </div>
+    <button id="send" class="btn btn-primary">Отправить сообщение</button>
+ </form>
+ 
+ 
+ 
+ $(function() {
+    
+    $('#send').click(function(e) {
+      
+      var formData = new FormData($('#message')[0]);
+
+      var file = $('#file');
+
+      formData.append('file', file.prop('files')[0]);
+     
+      $.ajax({
+        url: '/mes',
+        data: formData,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        dataType: 'JSON',
+        success: function sc(data) {
+          var output = '<ul>';
+          $.each(data, function(key, value) {
+            output += '<li><b>' + key + "</b>: " + value + '</li>';
+          });
+          output += '</ul>';
+          $('#result').html(output);
+          $("#message")[0].reset();
+
+        }
+      });
+      e.preventDefault();
+    });
+  });
