@@ -89,6 +89,3 @@ checked.push(node)
 node = findLowestCostNode(costs)	
 }
 
-console.log(costs)
-
-console.log(parents)
